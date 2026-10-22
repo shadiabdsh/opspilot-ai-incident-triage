@@ -15,7 +15,7 @@
   "check": "npm test && npm run typecheck && npm run lint && npm run build"
 },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.1.0",
