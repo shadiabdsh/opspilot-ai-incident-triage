@@ -3,7 +3,15 @@
 **An AI-assisted incident triage prototype that shows its evidence, states its uncertainty, and leaves every consequential decision to a human.**
 
 > **Status: independent 0→1 product exploration.** OpsPilot is a self-initiated portfolio prototype, not a shipped product. The user, problem and design bets are working hypotheses, not findings from user research. All AI output is **pre-authored and deterministic** so every demo and test session behaves identically; no model is called at runtime. Nothing in the prototype touches real systems.
+### Prototype scope
 
+This prototype uses deterministic, pre-authored scenario data. It does not call a live AI model, backend service, authentication system, or production incident-management platform. The interaction logic, decision gating, audit behavior, and UI states are implemented in the frontend to demonstrate the intended product behavior.
+---
+## Live prototype
+
+[Open the live OpsPilot prototype](https://opspilot-ai-incident-triage-six.vercel.app/)
+
+Deployed on Vercel from the `main` branch. New commits to `main` trigger an automatic deployment.
 ---
 
 ## The scenario
@@ -101,17 +109,36 @@ src/
 docs/            AI behaviour contract, design decisions, architecture, screenshots/ (final set)
 scripts/         contrast audit, browser accessibility and QA scripts, visual regression
 ```
+---
+## Where to start in the code
+If you are picking up the project for the first time, these are the main entry points:
 
+| Area | Start here |
+| --- | --- |
+| Application flow and screens | `src/screens/` |
+| Decision and safety gating | `src/domain/gate.ts` |
+| State transitions and audit behavior | `src/domain/reducer.ts` |
+| Shared domain types | `src/domain/types.ts` |
+| Application state | `src/state/` |
+| Reusable UI components | `src/components/` |
+| Design tokens | `src/styles/tokens.css` |
+| Prototype scenarios and fixture data | `src/fixtures/` |
+| Architecture rationale | `docs/architecture.md` |
+| Design decisions | `docs/design-decisions.md` |
+| AI behavior contract | `docs/ai-behavior-contract.md` |
+
+For product behavior, start with the screens and domain layer. For visual implementation, start with the component and token layers. For deeper context behind the implementation choices, see the documents in `docs/`.
 ---
 
 ## Getting started
 
-Requires Node 20 or later (see `.nvmrc`).
+Requires Node 24 or later (see `.nvmrc`).
 
 ```bash
-npm install
+npm ci
 npm run dev        # http://localhost:5173
 ```
+Before handing off or submitting changes, run `npm run check`. It runs the test suite, TypeScript checks, ESLint, and the production build.
 
 `/` is the Operations Dashboard; `/incidents/INC-2041` is Incident Detail. In development, `/?demo=loading` and `/?demo=empty` show the Dashboard's loading and empty states.
 
@@ -124,11 +151,19 @@ npm run dev        # http://localhost:5173
 | `npm run test:watch` | Run tests on change |
 | `npm run typecheck` | TypeScript, strict mode |
 | `npm run lint` | ESLint with accessibility rules (jsx-a11y) |
+| `npm run check` | Run tests, typecheck, lint, and production build |
 | `npm run build` | Typecheck, then build static files to `dist/` |
 | `npm run preview` | Serve the production build locally |
 
 ## Testing
+Every push and pull request to `main` is automatically verified with GitHub Actions.
 
+The CI workflow runs:
+
+- `npm ci`
+- `npm run check`
+
+`npm run check` runs the full test suite, TypeScript type checking, ESLint, and the production build. A passing CI run confirms that the repository installs cleanly and passes the project's developer verification checks.
 243 tests in 18 files (Vitest, React Testing Library, axe-core):
 
 - **`gate()`**: all 720 combinations of analysis status, confidence, tier, recommendation status and incident status, plus five invariants (for example, *acknowledged stale analysis never allows a consequential action*).
@@ -138,7 +173,7 @@ npm run dev        # http://localhost:5173
 - **Screens and flows**: Dashboard, Incident Detail, Low confidence and Stale scenarios (with fake timers), Audit, route titles and focus.
 
 ```bash
-npm test && npm run typecheck && npm run lint && npm run build
+npm run check
 python3 scripts/contrast-audit.py                     # 97 token pairings + semantic alias check
 ```
 
