@@ -1,0 +1,250 @@
+/*
+ * OpsPilot design tokens (visual system v2).
+ *
+ * Every hue has one job:
+ *   navy chrome            — navigation and the decision surface (human control)
+ *   cool neutrals          — observed facts and generic UI
+ *   cyan / teal            — AI inference, AI identity, selection, active nav
+ *   amber highlighter      — the active evidence trace only
+ *   coral                  — critical severity and consequential (high-risk) actions only
+ * Surfaces are layered: 0 canvas, 1 work regions, 2 key objects, 3 sticky bar and dialogs.
+ * See docs/design-decisions.md for the reasoning.
+ */
+:root {
+  /* ── Neutrals (cool) ─────────────────────────────────────────────── */
+  --color-page: #f3f6f9;            /* level 0 canvas */
+  --color-canvas-top: #e7eef5;      /* atmospheric top of the canvas */
+  --color-surface: #ffffff;         /* level 1 and 2 */
+  --color-surface-sunken: #f6f8fb;  /* read-only and inset areas */
+  --color-ink: #0e1a2b;
+  --color-ink-soft: #2a3a50;
+  --color-quiet: #4b5a6e;            /* AA-verified: ≥ 6.3:1 on every light surface */
+  --color-faint: #5a697c;            /* AA-verified: ≥ 4.8:1; was #8494a7 (2.9:1, failed) */
+  --color-rule: #e2e8ef;
+  --color-rule-strong: #c8d2de;
+  --color-control-border: #7d8b9e;  /* AA non-text: ≥ 3:1 for fields and control outlines */
+
+  /* ── Navy chrome: sidebar and decision surface ───────────────────── */
+  --color-nav: #0b1626;
+  --color-nav-raised: #12233a;
+  --color-nav-line: rgba(160, 190, 220, 0.12);
+  --color-nav-text: #9fb0c5;
+  --color-nav-text-strong: #eaf1f8;
+  --color-dock: rgba(11, 22, 38, 0.94);
+  --color-dock-disabled: #7d90a7;   /* blocked action labels on the decision surface */
+
+  /* ── AI inference: cyan / teal ───────────────────────────────────── */
+  --color-inference: #0b8a9b;          /* borders, icons, fills */
+  --color-inference-strong: #066574;   /* text on light surfaces (AA) */
+  --color-inference-bright: #3cc8d8;   /* primary action on navy, active nav */
+  --color-inference-tint: #eaf7f9;
+  --color-inference-tint-strong: #cdeef2;
+  --color-ai-region-top: #e2f4f7;
+  --color-ai-region: #f1f9fb;
+  --color-ai-region-edge: #cde6ec;
+
+  /* ── Unknown: graphite ───────────────────────────────────────────── */
+  --color-unknown: #555f6c;
+  --color-unknown-tint: #eef0f3;
+
+  /* ── Evidence trace: amber highlighter (active trace only) ───────── */
+  --color-trace: #fff1bf;
+  --color-trace-edge: #b07d00;      /* AA non-text: ≥ 3:1 on the highlight and on white; was #e0a100 */
+
+  /* ── Severity and risk ───────────────────────────────────────────── */
+  --color-critical: #c63c28;           /* coral-red: critical severity, consequential risk */
+  --color-critical-tint: #fdeeea;
+  --color-major: #a85a12;
+  --color-major-tint: #fbf0e4;
+  --color-minor: #6b6a1c;
+  --color-minor-tint: #f4f4df;
+  --color-info: #475569;
+  --color-info-tint: #eef2f6;
+  --color-success: #11795a;
+  --color-success-tint: #e3f4ee;
+  /* Caution (medium confidence, acknowledged stale): burnt orange, never the trace amber. */
+  --color-warning: #ad4a14;
+  --color-warning-tint: #fcefe6;
+
+  /* ── Named literals (previously hard-coded in components; values unchanged) ── */
+  --color-white: #ffffff;
+  --color-link: #1b62bd;                    /* audited: links */
+  --color-inference-strong-hover: #055562;  /* primary button hover */
+  --color-inference-bright-hover: #63d6e3;  /* Approve hover on the decision surface */
+  --color-on-inference-bright: #04202a;     /* audited: Approve label on cyan */
+  --color-critical-on-dark: #ffb3a4;        /* audited: consequential chip on the decision surface */
+  --color-warning-on-dark: #ffc2a8;         /* audited: caution text on the decision surface */
+
+  /* ── Focus ───────────────────────────────────────────────────────── */
+  --color-focus: #1b6fd1;
+  --focus-ring: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-focus);
+  --focus-ring-on-dark: 0 0 0 2px var(--color-nav), 0 0 0 4px var(--color-inference-bright);
+
+  /* ── Type: IBM Plex; mono only for machine data ──────────────────── */
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --text-2xs: 0.6875rem; /* 11px: dense metadata */
+  --text-xs: 0.75rem;    /* 12px: metadata */
+  --text-sm: 0.8125rem;  /* 13px: secondary, table cells */
+  --text-md: 0.9375rem;  /* 15px: body */
+  --text-lg: 1.0625rem;  /* 17px: section headings */
+  --text-xl: 1.375rem;   /* 22px: key object titles */
+  --text-2xl: 1.875rem;  /* 30px: page title */
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-body: 1.5;
+  --tracking-tight: -0.015em;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* ── Space: 4px grid ─────────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+
+  /* ── Radius: moderate, never pill-everything ─────────────────────── */
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+
+  /* ── Depth: used sparingly ───────────────────────────────────────── */
+  --shadow-1: 0 1px 2px rgba(14, 26, 43, 0.05);
+  --shadow-2: 0 1px 2px rgba(14, 26, 43, 0.04), 0 8px 24px -12px rgba(14, 26, 43, 0.14);
+  --shadow-dock: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 18px 40px -14px rgba(6, 15, 28, 0.55), 0 4px 12px rgba(6, 15, 28, 0.18);
+  --shadow-dialog: 0 24px 64px -16px rgba(6, 15, 28, 0.4), 0 2px 8px rgba(6, 15, 28, 0.12);
+  --shadow-sticky: 0 1px 0 var(--color-rule), 0 6px 16px -10px rgba(14, 26, 43, 0.18);
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  --sidebar-width: 228px;
+  --content-max: 1440px;
+  --header-height: 0px;       /* measured at runtime for scroll margins */
+  --decisionbar-height: 0px;
+
+  /* ── Motion: short and functional ────────────────────────────────── */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+
+  --z-sticky: 10;
+  --z-dialog: 50;
+}
+
+/*
+ * ── Semantic layer ────────────────────────────────────────────────────────
+ * Aliases only: every semantic token points at an audited foundation token above,
+ * so no value here can change a contrast relationship. Components should prefer these.
+ */
+:root {
+  /* Core surfaces */
+  --background: var(--color-page);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-ink);
+
+  /* Primary interaction (filled actions on light surfaces) */
+  --primary: var(--color-inference-strong);
+  --primary-foreground: var(--color-white);
+  --primary-hover: var(--color-inference-strong-hover);
+
+  /* Secondary and muted */
+  --secondary: var(--color-surface-sunken);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-surface-sunken);
+  --muted-foreground: var(--color-quiet);
+
+  /* Accent */
+  --accent: var(--color-inference-tint);
+  --accent-foreground: var(--color-inference-strong);
+
+  /* Destructive: errors and genuinely destructive actions, not severity (see --critical) */
+  --destructive: var(--color-critical);
+  --destructive-foreground: var(--color-white);
+
+  /* Decorative border only. Never the sole boundary of an interactive control. */
+  --border: var(--color-rule);
+  /* Interactive controls need the audited ≥ 3:1 boundary. */
+  --input: var(--color-control-border);
+  --control-border: var(--color-control-border);
+
+  /* Focus and links */
+  --ring: var(--color-focus);
+  --link: var(--color-link);
+
+  /* Radius: base control radius (an alias of an existing value) */
+  --radius: var(--radius-md);
+
+  /* Sidebar (dark navigation) */
+  --sidebar: var(--color-nav);
+  --sidebar-foreground: var(--color-nav-text);
+  --sidebar-primary: var(--color-inference-bright);
+  --sidebar-primary-foreground: var(--color-on-inference-bright);
+  --sidebar-accent: var(--color-nav-raised);
+  --sidebar-accent-foreground: var(--color-nav-text-strong);
+  --sidebar-border: var(--color-nav-line);
+  --sidebar-ring: var(--color-inference-bright);
+
+  /* ── OpsPilot product semantics: these encode meaning; keep them specialized ── */
+
+  /* Provenance */
+  --observed: var(--color-ink-soft);
+  --observed-surface: var(--color-surface-sunken);
+  --inferred: var(--color-inference);
+  --inferred-text: var(--color-inference-strong);
+  --inferred-action: var(--color-inference-bright);
+  --inferred-action-foreground: var(--color-on-inference-bright);
+  --inferred-action-hover: var(--color-inference-bright-hover);
+  --inferred-surface: var(--color-inference-tint);
+  --inferred-surface-strong: var(--color-inference-tint-strong);
+  --unknown: var(--color-unknown);
+  --unknown-surface: var(--color-unknown-tint);
+
+  /* AI assistance region */
+  --ai-surface-top: var(--color-ai-region-top);
+  --ai-surface: var(--color-ai-region);
+  --ai-border: var(--color-ai-region-edge);
+
+  /* Severity and status */
+  --critical: var(--color-critical);
+  --critical-surface: var(--color-critical-tint);
+  --major: var(--color-major);
+  --major-surface: var(--color-major-tint);
+  --minor: var(--color-minor);
+  --minor-surface: var(--color-minor-tint);
+  --info: var(--color-info);
+  --info-surface: var(--color-info-tint);
+  --warning: var(--color-warning);
+  --warning-surface: var(--color-warning-tint);
+  --success: var(--color-success);
+  --success-surface: var(--color-success-tint);
+
+  /* Risk: consequential actions share the critical hue, but mean something different */
+  --consequential: var(--color-critical);
+  --consequential-surface: var(--color-critical-tint);
+
+  /* Evidence trace (active trace only) */
+  --evidence-trace: var(--color-trace);
+  --evidence-trace-edge: var(--color-trace-edge);
+
+  /* Decision surface (dark, elevated) */
+  --decision-surface: var(--color-dock);
+  --decision-title: var(--color-white);
+  --decision-foreground: var(--color-nav-text-strong);
+  --decision-muted-foreground: var(--color-nav-text);
+  --decision-disabled-foreground: var(--color-dock-disabled);
+  --decision-consequential-text: var(--color-critical-on-dark);
+  --decision-warning-text: var(--color-warning-on-dark);
+  --decision-ring: var(--color-white);
+}
+
+@media (max-width: 1279px) {
+  :root { --sidebar-width: 64px; }
+}

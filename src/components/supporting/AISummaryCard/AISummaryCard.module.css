@@ -1,0 +1,8 @@
+/* Compact orientation, not the main event: the primary hypothesis carries more weight. */
+.card { display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-4); background: rgba(255, 255, 255, 0.72); border: 1px solid var(--ai-border); border-radius: var(--radius-lg); }
+.heading { font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--inferred-text); }
+.list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+.statement { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); column-gap: var(--space-2); align-items: baseline; }
+.statement > :first-child { position: relative; top: -1px; }
+.text { font-size: var(--text-sm); line-height: var(--leading-snug); color: var(--color-ink-soft); max-width: 70ch; }
+.evidence { grid-column: 1 / -1; margin: var(--space-1) 0 0; padding: 0; display: grid; gap: 2px; }

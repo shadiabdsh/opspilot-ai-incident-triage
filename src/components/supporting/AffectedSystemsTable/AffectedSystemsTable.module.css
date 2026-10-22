@@ -1,0 +1,25 @@
+.table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.table th, .table td { text-align: left; padding: 7px var(--space-2); border-bottom: 1px solid var(--border); vertical-align: middle; }
+.table thead th { padding-top: 0; font-size: var(--text-2xs); font-weight: var(--weight-medium); color: var(--color-faint); border-bottom-color: var(--color-rule-strong); }
+.table tbody th { font-weight: var(--weight-regular); }
+.table tbody:last-child tr:last-child > * { border-bottom: 0; }
+.id, .time { font-family: var(--font-mono); font-size: 0.78125rem; color: var(--foreground); }
+.time { white-space: nowrap; color: var(--color-ink-soft); }
+.state { font-weight: var(--weight-medium); color: var(--color-ink-soft); white-space: nowrap; }
+/* Offline is the incident itself: a small coral dot, text stays ink. */
+tr[data-state='offline'] .state::before { content: ''; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--critical); vertical-align: 1px; }
+tr[data-state='online'] .state::before { content: ''; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--success); opacity: 0.7; vertical-align: 1px; }
+.groupBody th { padding-left: var(--space-6); }
+.groupBody > tr > * { background: var(--muted); }
+.groupToggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  min-height: 24px; border: 0; background: none; padding: 0 4px 0 0; cursor: pointer; border-radius: var(--radius-sm);
+  font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--foreground); text-align: left;
+}
+/* The trace highlight, shared with EvidenceItem and the timeline row. */
+tr > * { transition: background var(--duration-base) var(--ease-out); }
+tr[data-active] > * { background: var(--evidence-trace) !important; }
+tr[data-active] > :first-child { box-shadow: inset 3px 0 0 var(--evidence-trace-edge); }
+@media (max-width: 1439px) {
+  .table th:nth-child(2), .table td:nth-child(2) { display: none; }
+}

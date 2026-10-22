@@ -1,0 +1,44 @@
+/* Calm, not alarming: caution tint and a slim caution rail; no new colours. */
+.banner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--warning-surface);
+  border: 1px solid var(--warning-surface);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius-lg);
+}
+.banner[data-mode='analyzing'] { display: grid; gap: var(--space-2); background: var(--card); border-color: var(--ai-border); border-left-color: var(--inferred); }
+.banner:focus, .compact:focus { outline: 2px solid var(--ring); outline-offset: 2px; }
+.text { display: grid; gap: 2px; min-width: 0; }
+.title { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--foreground); }
+.title svg { color: var(--warning); flex: none; }
+.body { font-size: var(--text-sm); color: var(--color-ink-soft); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.primary, .secondary {
+  min-height: 34px; padding: 0 var(--space-4);
+  border-radius: var(--radius-md); cursor: pointer;
+  font-size: var(--text-sm); font-weight: var(--weight-semibold);
+}
+.primary { background: var(--primary); border: 1px solid var(--primary); color: var(--primary-foreground); }
+.primary:hover { background: var(--primary-hover); }
+.secondary { background: var(--card); border: 1px solid var(--control-border); color: var(--foreground); font-weight: var(--weight-medium); }
+.compact .secondary { min-height: 28px; padding: 0 var(--space-3); font-size: var(--text-xs); }
+
+/* Indeterminate progress; static under reduced motion (base.css stops the animation). */
+.progress { height: 3px; border-radius: 3px; background: var(--inferred-surface-strong); overflow: hidden; }
+.progress span { display: block; width: 40%; height: 100%; border-radius: 3px; background: var(--inferred); animation: progress 1.2s var(--ease-out) infinite; }
+@keyframes progress { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+.compact {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs); color: var(--color-ink-soft);
+}
+.compact p { flex: 1 1 260px; }
+.compact strong { color: var(--foreground); }
+.compact[data-mode='acknowledged'] { background: var(--warning-surface); }
+.compact[data-mode='acknowledged'] > svg { color: var(--warning); flex: none; }
+.compact[data-mode='refreshed'] { background: var(--success-surface); }
+.compact[data-mode='refreshed'] > svg { color: var(--success); flex: none; }
+.consequences { margin: 0; padding-left: 1.1rem; display: grid; gap: 4px; font-size: var(--text-sm); color: var(--color-ink-soft); }

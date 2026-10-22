@@ -1,0 +1,27 @@
+/*
+ * A compact signal-style chip. The band is carried by the word and by how many of the
+ * three rising bars are filled (3 / 2 / 1), so it survives grayscale and colour-blindness.
+ */
+.root { display: grid; gap: 6px; justify-items: start; }
+.root[data-layout='inline'] { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--space-3); }
+
+.row {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 24px; padding: 0 9px 0 8px;
+  border-radius: var(--radius-sm);
+  background: var(--inferred-surface);
+  border: 1px solid var(--inferred-surface-strong);
+}
+.segments { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.segments > span { width: 4px; border-radius: 1.5px; border: 1px solid var(--inferred); }
+.segments > span:nth-child(1) { height: 6px; }
+.segments > span:nth-child(2) { height: 9px; }
+.segments > span:nth-child(3) { height: 12px; }
+.filled { background: var(--inferred); }
+.empty { background: transparent; border-color: var(--control-border) !important; }
+.word { font-weight: var(--weight-semibold); font-size: var(--text-xs); color: var(--inferred-text); white-space: nowrap; }
+
+.reason { font-size: var(--text-sm); color: var(--color-ink-soft); max-width: 68ch; line-height: var(--leading-snug); }
+
+/* Low confidence: same family, quieter chip, so it never reads as an alarm. */
+.root[data-band='low'] .row { background: var(--muted); border-color: var(--color-rule-strong); }

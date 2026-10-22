@@ -1,0 +1,85 @@
+.shell { height: 100vh; height: 100dvh; display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); overflow: hidden; }
+
+.skip { position: absolute; left: var(--space-4); top: -48px; padding: var(--space-2) var(--space-3); background: var(--card); border-radius: var(--radius-sm); z-index: 100; }
+.skip:focus { top: var(--space-2); }
+
+/* ── Sidebar ─────────────────────────────────────────────────────────── */
+.sidebar {
+  height: 100%; overflow-y: auto;
+  display: flex; flex-direction: column; gap: var(--space-6);
+  padding: var(--space-4) var(--space-3);
+  background: var(--sidebar);
+  /* Subtle tonal depth: a slightly raised band at the top, no heavy gradient. */
+  background-image: linear-gradient(180deg, var(--sidebar-accent) 0, var(--sidebar) 220px);
+  border-right: 1px solid var(--sidebar-border);
+  color: var(--sidebar-foreground);
+}
+.brand { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); color: var(--sidebar-accent-foreground); text-decoration: none; border-radius: var(--radius-sm); }
+.brandText { font-weight: var(--weight-semibold); font-size: 0.9375rem; letter-spacing: -0.01em; }
+.nav { display: grid; gap: 2px; }
+.navItem {
+  position: relative;
+  display: flex; align-items: center; gap: var(--space-3);
+  height: 34px; padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--sidebar-foreground); text-decoration: none;
+  font-size: var(--text-sm); font-weight: var(--weight-medium);
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.navItem:hover { background: rgba(160, 190, 220, 0.08); color: var(--sidebar-accent-foreground); }
+.active { background: rgba(60, 200, 216, 0.1); color: var(--sidebar-accent-foreground); }
+.active::before { content: ''; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--sidebar-primary); }
+.active svg { color: var(--sidebar-primary); }
+.sidebar :focus-visible { outline-color: var(--sidebar-primary); }
+.user { margin-top: auto; display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2); border-top: 1px solid var(--sidebar-border); font-size: var(--text-xs); }
+.avatar { flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--sidebar-accent); color: var(--sidebar-accent-foreground); font-weight: var(--weight-semibold); border: 1px solid var(--sidebar-border); }
+
+/* ── Workspace: bright, cool, with a faint data-flow texture at the top ── */
+.workspace {
+  min-width: 0; min-height: 0;
+  display: grid; grid-template-rows: minmax(0, 1fr) auto;
+  background-color: var(--background);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='320' viewBox='0 0 1200 320' fill='none' stroke='%237fa3c4' stroke-width='1'%3E%3Cpath d='M0 210 C 220 150, 380 260, 600 190 S 980 110, 1200 170' opacity='.22'/%3E%3Cpath d='M0 240 C 240 185, 420 285, 620 220 S 990 145, 1200 200' opacity='.16'/%3E%3Cpath d='M0 270 C 260 220, 450 310, 640 250 S 1000 180, 1200 230' opacity='.11'/%3E%3Ccircle cx='600' cy='190' r='2.5' fill='%237fa3c4' opacity='.3'/%3E%3Ccircle cx='980' cy='122' r='2' fill='%237fa3c4' opacity='.25'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, var(--color-canvas-top) 0, var(--background) 360px);
+  background-repeat: no-repeat;
+  background-position: right top, 0 0;
+  background-size: min(1200px, 100%) auto, 100% 100%;
+}
+.workspace:focus { outline: none; }
+/* The one primary scroll area. scroll-padding keeps focused or scrolled-to content
+   clear of the sticky incident header. */
+.scroller {
+  min-height: 0; overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+  scroll-padding-top: calc(var(--header-height) + var(--space-3));
+  scroll-padding-bottom: var(--space-4);
+}
+.content { flex: 1 0 auto; min-width: 0; }
+/* Reserved dock zone: content never scrolls behind it. Empty when nothing is docked. */
+.dock { min-width: 0; }
+.dock:empty { display: none; }
+.footer { padding: var(--space-4) var(--space-6); font-size: var(--text-xs); color: var(--color-faint); }
+
+/* ── Below the supported width (for example 200% zoom on a laptop) ────────
+   Basic fallback, not a designed layout: the page returns to normal document flow and the
+   decision surface sits at the end of the content instead of being pinned, so no pinned
+   bar can obscure content on very small viewports. */
+@media (max-width: 1023px) {
+  .shell { height: auto; min-height: 100vh; overflow: visible; }
+  .sidebar { position: sticky; top: 0; height: 100vh; }
+  .workspace { display: block; }
+  .scroller { overflow: visible; }
+}
+
+/* ── Collapsed rail below 1280 px ────────────────────────────────────── */
+@media (max-width: 1279px) {
+  .sidebar { padding: var(--space-4) var(--space-2); align-items: center; }
+  .brand, .navItem { justify-content: center; padding: 0; width: 40px; }
+  .brand { height: 36px; }
+  .active::before { left: -8px; }
+  .label, .brandText {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .user { padding: var(--space-2) 0; justify-content: center; }
+}

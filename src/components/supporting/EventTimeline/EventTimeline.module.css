@@ -1,0 +1,72 @@
+/*
+ * The evidence base: a vertical guide and compact rows. Events the AI cites lead;
+ * routine, uncited events are quieter and tighter, but never hidden.
+ */
+.timeline { position: relative; margin: 0; padding: 0; list-style: none; display: grid; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 10px; width: 1px; background: var(--color-rule-strong); }
+
+.row {
+  position: relative;
+  display: grid; gap: 1px;
+  padding: 8px var(--space-2) 8px 26px;
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+  scroll-margin-bottom: var(--space-6);
+  transition: background var(--duration-base) var(--ease-out);
+}
+.row + .row { border-top: 1px solid var(--border); }
+
+/* Node on the guide: hollow for routine events, filled cyan for events the AI cites. */
+.row::before {
+  content: ''; position: absolute; left: 4px; top: 13px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--card); border: 1.5px solid var(--control-border);
+}
+.row[data-cited]::before { left: 3px; top: 12px; width: 9px; height: 9px; background: var(--inferred); border-color: var(--inferred); }
+
+/* Routine (uncited) events: tighter and quieter. */
+.row:not([data-cited]) { padding-top: 5px; padding-bottom: 5px; }
+.row:not([data-cited]) .time { font-weight: var(--weight-regular); color: var(--color-ink-soft); }
+.row:not([data-cited]) .message samp { font-size: 0.75rem; }
+.row:not([data-cited])::before { top: 10px; }
+
+.row[data-active] { background: var(--evidence-trace); border-radius: var(--radius-md); }
+.row[data-active] + .row { border-top-color: transparent; }
+.row[data-active]::before { background: var(--evidence-trace-edge); border-color: var(--evidence-trace-edge); box-shadow: 0 0 0 3px rgba(176, 125, 0, 0.22); }
+/* Programmatic focus target for Show source: always show the ring when focused. */
+.row:focus { outline: 2px solid var(--ring); outline-offset: 1px; border-radius: var(--radius-md); }
+
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--space-3); font-size: var(--text-xs); }
+.time { font-family: var(--font-mono); font-weight: var(--weight-semibold); color: var(--foreground); font-variant-numeric: tabular-nums; }
+.system { font-family: var(--font-mono); color: var(--color-ink-soft); }
+.source { color: var(--muted-foreground); font-size: var(--text-2xs); }
+.new { font-weight: var(--weight-semibold); color: var(--warning); }
+.cited {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 3px;
+  padding: 1px 6px; border-radius: 4px;
+  background: var(--inferred-surface); color: var(--inferred-text);
+  font-size: var(--text-2xs); font-weight: var(--weight-semibold);
+}
+.cited svg { width: 10px; height: 10px; }
+.messageRow { display: flex; align-items: flex-start; gap: var(--space-2); min-width: 0; }
+.message { min-width: 0; flex: 1; }
+.message samp { display: block; font-family: var(--font-mono); font-size: 0.78125rem; color: var(--muted-foreground); overflow-wrap: anywhere; line-height: 1.45; }
+.row[data-active] .message samp { color: var(--color-ink-soft); }
+.expand {
+  flex: none; display: inline-flex; align-items: center; gap: 2px;
+  min-height: 24px; padding: 0 6px 0 2px;
+  border: 1px solid var(--control-border); border-radius: var(--radius-sm); background: var(--card);
+  font-size: var(--text-2xs); font-weight: var(--weight-semibold); color: var(--color-ink-soft); cursor: pointer;
+}
+.back {
+  justify-self: start; margin-top: 4px;
+  min-height: 26px; padding: 0 var(--space-2); font-size: var(--text-xs); font-weight: var(--weight-semibold);
+  border: 1px solid var(--foreground); border-radius: var(--radius-sm); background: var(--card); color: var(--foreground); cursor: pointer;
+}
+
+/* 1024–1279: one-line raw messages; Expand, the active trace or Show source reveal the full text. */
+@media (max-width: 1279px) {
+  .message samp { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row[data-expanded] .message samp, .row:focus .message samp, .row[data-active] .message samp {
+    white-space: normal; overflow: visible;
+  }
+}
